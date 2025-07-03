@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { authors } from "../../../hardcoded-data/authors";
+import { FollowedAuthorsProvider } from "../../contexts/followed-authors-provider";
 import AuthorClient from "./AuthorClient";
 
 interface Props {
@@ -19,5 +20,9 @@ export default function AuthorPage({ params }: Props) {
     return;
   }
 
-  return <AuthorClient author={author} />;
+  return (
+    <FollowedAuthorsProvider>
+      <AuthorClient author={author} />
+    </FollowedAuthorsProvider>
+  );
 }

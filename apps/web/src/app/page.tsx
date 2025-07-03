@@ -2,6 +2,7 @@
 
 import ArticleList from "../northern-star/ArticleList/ArticleList";
 import { articles } from "../hardcoded-data/articles";
+import { FollowedAuthorsProvider } from "./contexts/followed-authors-provider";
 
 export default function HomePage() {
   // Group articles by first category type
@@ -19,16 +20,18 @@ export default function HomePage() {
   const categories = Object.keys(articlesByCategory).sort();
 
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-7xl mx-auto">
-        {categories.map((category) => (
-          <ArticleList
-            key={category}
-            title={category}
-            articles={articlesByCategory[category]}
-          />
-        ))}
-      </div>
-    </main>
+    <FollowedAuthorsProvider>
+      <main className="min-h-screen bg-gray-50 py-10 px-4">
+        <div className="max-w-7xl mx-auto">
+          {categories.map((category) => (
+            <ArticleList
+              key={category}
+              title={category}
+              articles={articlesByCategory[category]}
+            />
+          ))}
+        </div>
+      </main>
+    </FollowedAuthorsProvider>
   );
 }

@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link"
+import Link from "next/link";
 import { authors } from "../../../hardcoded-data/authors";
+import { useFollowedAuthors } from "../../hooks/followed-authors-hooks";
+
 interface Article {
   slug: string;
   title: string;
@@ -16,20 +18,31 @@ interface ArticleClientProps {
 }
 
 export default function ArticleClient({ article }: ArticleClientProps) {
-  const author = authors.find((author) => author.name === article.author);
+  const { followedAuthors } = useFollowedAuthors();
 
+  const author = authors.find((author) => author.name === article.author);
+  const isFollowing = followedAuthors.includes(article.author);
+  console.log(followedAuthors);
+  console.log(isFollowing);
   return (
     <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-4 text-primary-emerald-green">{article.title}</h1>
+      <h1 className="text-4xl font-bold mb-4 text-primary-emerald-green">
+        {article.title}
+      </h1>
       <p className="text-sm text-gray-500 mb-6">
-        By{" "}       
-          <Link
-            href={author ? `/author/${author.slug}` : "#"}
-            className="hover:underline"
-          >
-            {article.author}
-          </Link>
-        {" "}· {article.date}
+        By{" "}
+        <Link
+          href={author ? `/author/${author.slug}` : "#"}
+          className="hover:underline"
+        >
+          {article.author}
+        </Link>{" "}
+        {isFollowing ? (
+          <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+            Following
+          </span>
+        ) : null}
+        · {article.date}
       </p>
       {article.image && (
         <img

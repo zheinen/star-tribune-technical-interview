@@ -1,4 +1,5 @@
 "use client";
+import { useFollowedAuthors } from "../../hooks/followed-authors-hooks";
 
 export interface Author {
   name: string;
@@ -12,28 +13,41 @@ interface AuthorClientProps {
 }
 
 export default function AuthorClient({ author }: AuthorClientProps) {
-    return (
-        <main className="max-w-4xl mx-auto p-6">
-            {/* Headshot + info row */}
-            <div className="flex items-start space-x-6">
-                {author.headshot && (
-                    <img
-                        src={author.headshot}
-                        alt={author.name}
-                        className="w-24 h-24 rounded-full"
-                    />
-                )}
+  const { followedAuthors, followAuthor, unfollowAuthor } =
+    useFollowedAuthors();
 
-                {/* Name + Bio stacked vertically */}
-                <div>
-                    <h1 className="text-4xl font-bold text-primary-emerald-green mb-2">
-                        {author.name}
-                    </h1>
-                    <article className="prose prose-green">
-                        <p>{author.bio}</p>
-                    </article>
-                </div>
-            </div>
-        </main>
-    );
+  const isFollowing = followedAuthors.includes(author.name);
+  const toggleFollowingAuthor = () => {
+    isFollowing ? unfollowAuthor(author.name) : followAuthor(author.name);
+  };
+  return (
+    <main className="max-w-4xl mx-auto p-6">
+      {/* Headshot + info row */}
+      <div className="flex items-start space-x-6">
+        {author.headshot && (
+          <img
+            src={author.headshot}
+            alt={author.name}
+            className="w-24 h-24 rounded-full"
+          />
+        )}
+
+        {/* Name + Bio stacked vertically */}
+        <div>
+          <h1 className="text-4xl font-bold text-primary-emerald-green mb-2">
+            {author.name}
+          </h1>
+          <article className="prose prose-green">
+            <p>{author.bio}</p>
+          </article>
+          <input
+            type="checkbox"
+            checked={isFollowing}
+            onChange={toggleFollowingAuthor}
+          />
+          <label>{isFollowing ? " Unfollow" : " Follow"}</label>
+        </div>
+      </div>
+    </main>
+  );
 }
