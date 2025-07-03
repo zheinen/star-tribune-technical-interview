@@ -22,8 +22,7 @@ export default function ArticleClient({ article }: ArticleClientProps) {
 
   const author = authors.find((author) => author.name === article.author);
   const isFollowing = followedAuthors.includes(article.author);
-  console.log(followedAuthors);
-  console.log(isFollowing);
+
   return (
     <main className="max-w-4xl mx-auto p-6">
       <h1 className="text-4xl font-bold mb-4 text-primary-emerald-green">
